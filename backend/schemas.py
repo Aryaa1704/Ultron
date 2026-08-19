@@ -121,9 +121,18 @@ class ChatRequest(BaseModel):
     message: str = Field(min_length=1)
     conversation_id: str | None = None
     title: str | None = Field(default=None, max_length=255)
+    stream: bool = False
+
+
+class TokenUsageRead(BaseModel):
+    input_tokens: int | None = None
+    output_tokens: int | None = None
+    total_tokens: int | None = None
 
 
 class ChatResponse(BaseModel):
     conversation_id: str
     message: MessageRead
     routed_agent: str | None = None
+    model: str | None = None
+    token_usage: TokenUsageRead | None = None

@@ -10,9 +10,11 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.exc import SQLAlchemyError
 
 from backend.middleware.rate_limit import InMemoryRateLimiter
+from backend.routers.agents import router as agents_router
 from backend.routers.auth import router as auth_router
 from backend.routers.chat import router as chat_router
 from backend.routers.conversations import router as conversations_router
+from backend.routers.memory import router as memory_router
 
 logging.basicConfig(
     level=os.getenv("LOG_LEVEL", "INFO"),
@@ -93,6 +95,8 @@ async def unhandled_exception_handler(_: Request, exc: Exception):
 app.include_router(auth_router)
 app.include_router(chat_router)
 app.include_router(conversations_router)
+app.include_router(memory_router)
+app.include_router(agents_router)
 
 
 @app.get("/healthz")
