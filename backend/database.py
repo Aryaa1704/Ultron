@@ -3,12 +3,10 @@ from dotenv import load_dotenv
 load_dotenv("/workspaces/Ultron/.env")
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
-from sqlalchemy.orm import DeclarativeBase
+
+from backend.models import Base
 
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite+aiosqlite:///./jarvis.db")
-
-class Base(DeclarativeBase):
-    pass
 
 engine = create_async_engine(DATABASE_URL, echo=False)
 

@@ -10,8 +10,11 @@ class Settings(BaseSettings):
     secret_key: str
     database_url: str
     redis_url: str = "redis://localhost:6379/0"
-    anthropic_api_key: str | None = None
+    gemini_api_key: str | None = None
     anthropic_model: str = "claude-3-5-sonnet-latest"
+    anthropic_max_tokens: int = 1024
+    anthropic_timeout_seconds: float = 30.0
+    chat_context_message_window: int = 12
     chroma_persist_directory: str = "./chroma_data"
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")

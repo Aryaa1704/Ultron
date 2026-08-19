@@ -9,7 +9,7 @@ JARVIS-OS is a production-ready foundation for an AI Operating System built arou
 - **Relational DB**: PostgreSQL
 - **Vector Memory**: ChromaDB
 - **Task Queue**: Celery + Redis
-- **AI Provider**: Anthropic Claude API
+- **AI Provider**: Google Gemini API
 
 ## Project Structure
 
@@ -230,3 +230,25 @@ celery -A backend.celery_app.celery_app worker --loglevel=info
 - Add observability: OpenTelemetry, structured logs, metrics
 - Add model fallback strategy and prompt versioning
 - Harden tool adapters with real provider SDK integrations
+
+## Phase 3: Gemini AI Brain
+
+Phase 3 connects the authenticated `POST /chat` route to Google Gemini through a backend service layer. In plain words: the chat route is the front desk, and `backend/services/ai_brain.py` is the private engine room that talks to Gemini. The browser never receives the Gemini API key.
+
+### Required AI environment variables
+
+Add these values to `.env`:
+
+```bash
+GEMINI_API_KEY=your-gemini-api-key
+ANTHROPIC_MAX_TOKENS=1024
+ANTHROPIC_TIMEOUT_SECONDS=30
+CHAT_CONTEXT_MESSAGE_WINDOW=12
+```
+
+- `GEMINI_API_KEY`: secret server-side Gemini key.
+- `ANTHROPIC_MAX_TOKENS`: maximum size of one Gemini answer.
+- `ANTHROPIC_TIMEOUT_SECONDS`: how long ULTRON waits before treating Gemini as unavailable.
+- `CHAT_CONTEXT_MESSAGE_WINDOW`: how many recent saved messages are sent back to Gemini as short-term context.
+
+The normal non-streaming response remains JSON. Clients may pass `"stream": true` to receive a plain-text streaming response when they can handle streamed chunks.
